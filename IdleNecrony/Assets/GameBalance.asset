@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b41ecb83109efd4a9052659d5402f18, type: 3}
+  m_Name: GameBalance
+  m_EditorClassIdentifier: 
+  unitUpgradeSettings:
+    baseUpgradeCost: 10
+    upgradeCostMultiplier: 1.2
+    dpsIncreaseMultiplier: 1
+  currencySettings:
+    currencyGenerationRate: 1
+  enemySettings:
+    enemyBaseHealth: 100
+    enemyHealthMultiplier: 1.2
+    enemyBaseReward: 50
+    enemyRewardMultiplier: 1.1
+    enemySpawnInterval: 1
+  castleSettings:
+    castleHealth: 1000
+  clickSettings:
+    baseClickDamage: 1
+    clickDamageMultiplier: 1.2
+    baseClickUpgradeCost: 100
+    clickUpgradeCostMultiplier: 2
