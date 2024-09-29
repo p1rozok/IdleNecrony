@@ -1,8 +1,10 @@
+
+
+
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 
 
 public class ArmyManager : MonoBehaviour
@@ -10,7 +12,7 @@ public class ArmyManager : MonoBehaviour
     public static ArmyManager Instance;
 
     public float armyDPS = 0f; 
-    public Text dpsText;
+    public Text dpsText; 
 
     public GameBalance gameBalance; 
 
@@ -18,6 +20,7 @@ public class ArmyManager : MonoBehaviour
 
     private void Awake()
     {
+        
         if (Instance == null)
             Instance = this;
         else
@@ -26,23 +29,28 @@ public class ArmyManager : MonoBehaviour
 
     private void Start()
     {
+        
         if (gameBalance == null)
         {
             Debug.LogError("GameBalance не привязан в ArmyManager");
             return;
         }
 
+       
         units.AddRange(FindObjectsOfType<Unit>());
 
+       
         foreach (Unit unit in units)
         {
             unit.OnDPSChanged += RecalculateArmyDPS;
         }
 
+        
         RecalculateArmyDPS();
         StartCoroutine(DealDamageOverTime());
     }
 
+  
     public void AddUnit(Unit unit)
     {
         units.Add(unit);
@@ -50,11 +58,13 @@ public class ArmyManager : MonoBehaviour
         RecalculateArmyDPS();
     }
 
+    
     public List<Unit> GetUnits()
     {
         return units;
     }
 
+   
     void RecalculateArmyDPS()
     {
         armyDPS = 0f;
@@ -65,11 +75,13 @@ public class ArmyManager : MonoBehaviour
         UpdateDPSUI();
     }
 
+    
     void RecalculateArmyDPS(float unitDPS)
     {
         RecalculateArmyDPS();
     }
 
+    
     void UpdateDPSUI()
     {
         if (dpsText != null)
@@ -78,32 +90,48 @@ public class ArmyManager : MonoBehaviour
         }
     }
 
+  
     IEnumerator DealDamageOverTime()
     {
         while (true)
         {
             float damage = armyDPS * Time.deltaTime;
-            DealDamageToEnemy(damage);
+            DealDamage(damage);
             GenerateCurrency(damage);
             yield return null;
         }
     }
 
-    void DealDamageToEnemy(float damage)
+  
+    void DealDamage(float damage)
     {
-        Enemy enemy = FindObjectOfType<Enemy>();
+        Enemy enemy = FindObjectOfType<Enemy>(); 
+        Castle castle = FindObjectOfType<Castle>(); 
+
         if (enemy != null)
         {
             enemy.TakeDamage(damage);
+            Debug.Log($"Армия нанесла урон врагу: {damage}");
+        }
+        else if (castle != null) 
+        {
+            castle.TakeDamage(damage);
+            Debug.Log($"Армия нанесла урон замку: {damage}");
+        }
+        else
+        {
+            Debug.LogWarning("Нет врага или замка для нанесения урона.");
         }
     }
 
+    
     void GenerateCurrency(float amount)
     {
         if (CurrencyManager.Instance != null)
         {
             float currencyAmount = amount * gameBalance.currencySettings.currencyGenerationRate;
             CurrencyManager.Instance.AddCurrency(currencyAmount);
+            Debug.Log($"Сгенерировано {currencyAmount} валюты за {amount} урона.");
         }
     }
 }

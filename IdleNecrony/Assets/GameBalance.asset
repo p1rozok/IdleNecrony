@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: GameBalance
   m_EditorClassIdentifier: 
   unitUpgradeSettings:
-    baseUpgradeCost: 10
-    upgradeCostMultiplier: 1.2
-    dpsIncreaseMultiplier: 1
+    baseUpgradeCost: 40
+    upgradeCostMultiplier: 1.15
+    dpsIncreaseMultiplier: 1.5
   currencySettings:
     currencyGenerationRate: 1
   enemySettings:
-    enemyBaseHealth: 100
+    enemyBaseHealth: 150
     enemyHealthMultiplier: 1.2
     enemyBaseReward: 50
-    enemyRewardMultiplier: 1.1
+    enemyRewardMultiplier: 1.2
     enemySpawnInterval: 1
   castleSettings:
     castleHealth: 1000
@@ -30,4 +30,4 @@ MonoBehaviour:
     baseClickDamage: 1
     clickDamageMultiplier: 1.2
     baseClickUpgradeCost: 100
-    clickUpgradeCostMultiplier: 2
+    clickUpgradeCostMultiplier: 3

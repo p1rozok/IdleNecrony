@@ -11,7 +11,7 @@ public class GameBalance : ScriptableObject
         [Tooltip("Множитель увеличения стоимости улучшения после каждого улучшения")]
         public float upgradeCostMultiplier = 1.5f;
         [Tooltip("Процент увеличения DPS при улучшении (от базового DPS юнита)")]
-        public float dpsIncreaseMultiplier = 0.5f; 
+        public float dpsIncreaseMultiplier = 0.5f;
     }
 
     [System.Serializable]
@@ -71,3 +71,4 @@ public class GameBalance : ScriptableObject
     [Header("Параметры клика")]
     public ClickSettings clickSettings;
 }
+

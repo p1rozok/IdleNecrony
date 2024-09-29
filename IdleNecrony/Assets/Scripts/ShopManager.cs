@@ -26,7 +26,8 @@ public class ShopManager : MonoBehaviour
 
             costText.text = "Стоимость: " + unitData.unitCost.ToString("F0");
 
-            buyButton.onClick.AddListener(() => {
+            buyButton.onClick.AddListener(() =>
+            {
                 BuyUnit(unitData);
             });
         }
@@ -36,17 +37,17 @@ public class ShopManager : MonoBehaviour
     {
         if (CurrencyManager.Instance != null && CurrencyManager.Instance.SpendCurrency(unitData.unitCost))
         {
-            
+
             GameObject unitObj = Instantiate(unitData.unitPrefab);
             Unit unit = unitObj.GetComponent<Unit>();
             unit.unitName = unitData.unitName;
             unit.baseDPS = unitData.baseDPS;
             unit.gameBalance = unitData.gameBalance;
 
-            
+
             ArmyManager.Instance.AddUnit(unit);
 
-            
+
         }
         else
         {

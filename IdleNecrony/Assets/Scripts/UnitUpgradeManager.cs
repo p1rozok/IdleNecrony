@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class UnitUpgradeManager : MonoBehaviour
 {
-    public Transform unitsContent; 
-    public GameObject unitUpgradeItemPrefab; 
+    public Transform unitsContent;
+    public GameObject unitUpgradeItemPrefab;
 
     private List<Unit> units = new List<Unit>();
 
@@ -27,7 +27,8 @@ public class UnitUpgradeManager : MonoBehaviour
 
             UpdateUnitUI(unit, dpsText, upgradeCostText);
 
-            upgradeButton.onClick.AddListener(() => {
+            upgradeButton.onClick.AddListener(() =>
+            {
                 unit.Upgrade();
                 UpdateUnitUI(unit, dpsText, upgradeCostText);
             });
@@ -40,3 +41,6 @@ public class UnitUpgradeManager : MonoBehaviour
         upgradeCostText.text = "Улучшить за: " + unit.upgradeCost.ToString("F0");
     }
 }
+
+
+ 

@@ -1,14 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class Castle : MonoBehaviour
 {
-    public float maxHealth = 1000f; 
+    public static event System.Action<int> OnCastleDestroyed; // Событие для оповещения об уничтожении замка
+
+    public float maxHealth = 1000f;
     private float currentHealth;
-    public Text healthText; 
+    public Text healthText;
 
     public GameBalance gameBalance;
-    public int cutsceneIndex; 
+    public int cutsceneIndex;
 
     private void Start()
     {
@@ -45,6 +48,8 @@ public class Castle : MonoBehaviour
     private void DestroyCastle()
     {
         Debug.Log("Замок разрушен!");
+
+        OnCastleDestroyed?.Invoke(cutsceneIndex); // Вызов события с передачей индекса катсцены
 
         if (EnemySpawner.Instance != null)
         {

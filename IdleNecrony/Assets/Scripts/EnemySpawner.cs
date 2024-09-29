@@ -1,23 +1,24 @@
+
+
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
     public static EnemySpawner Instance;
 
-    [Header("Prefabs")]
     public GameObject[] enemyPrefabs; 
-    public GameObject[] castlePrefabs; 
+    public GameObject[] castlePrefabs;
 
-    [Header("Spawn Settings")]
     public Transform spawnPoint;
-    public int enemiesToSpawnBeforeCastle = 4; 
+    public int enemiesToSpawnBeforeCastle = 4;
 
-    private int totalEnemiesDefeated = 0; 
-    private int enemiesInCurrentCycle = 0; 
-    private bool isCastleSpawned = false; 
-    private int currentCastleIndex = 0; 
+    private int totalEnemiesDefeated = 0;
+    private int enemiesInCurrentCycle = 0;
+    private bool isCastleSpawned = false;
+    private int currentCastleIndex = 0;
 
-    public GameBalance gameBalance; 
+    public GameBalance gameBalance;
+    public DialogSystem dialogSystem;
 
     private void Awake()
     {
@@ -41,54 +42,37 @@ public class EnemySpawner : MonoBehaviour
             return;
         }
 
-        if (enemyPrefabs.Length == 0)
-        {
-            Debug.LogError("EnemySpawner не содержит ни одного префаба врага!");
-            return;
-        }
-
-        if (castlePrefabs.Length == 0)
-        {
-            Debug.LogError("EnemySpawner не содержит ни одного префаба замка!");
-            return;
-        }
-
         Debug.Log("EnemySpawner успешно инициализирован.");
         SpawnNextEntity();
     }
 
     public void SpawnNextEntity()
     {
-        
         if (!isCastleSpawned && enemiesInCurrentCycle < enemiesToSpawnBeforeCastle)
         {
             SpawnEnemy();
         }
-       
         else if (!isCastleSpawned && enemiesInCurrentCycle >= enemiesToSpawnBeforeCastle)
         {
             SpawnCastle();
-        }
-        
-        else if (isCastleSpawned)
-        {
-            Debug.Log("Продолжаем спавн врагов после уничтожения замка.");
-            isCastleSpawned = false;
-            enemiesInCurrentCycle = 0; 
-            SpawnEnemy();
         }
     }
 
     private void SpawnEnemy()
     {
-       
-        int enemyIndex = Random.Range(0, enemyPrefabs.Length);
-        GameObject obj = Instantiate(enemyPrefabs[enemyIndex], spawnPoint.position, Quaternion.identity);
+        if (enemyPrefabs.Length == 0)
+        {
+            Debug.LogError("Нет доступных префабов врагов.");
+            return;
+        }
+
+        int randomIndex = Random.Range(0, enemyPrefabs.Length);
+        GameObject obj = Instantiate(enemyPrefabs[randomIndex], spawnPoint.position, Quaternion.identity);
         Enemy enemy = obj.GetComponent<Enemy>();
         if (enemy != null)
         {
             enemy.gameBalance = gameBalance;
-            enemy.Initialize(totalEnemiesDefeated); 
+            enemy.Initialize(totalEnemiesDefeated);
             Debug.Log("Враг заспавнен.");
         }
         else
@@ -101,7 +85,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (currentCastleIndex >= castlePrefabs.Length)
         {
-            Debug.LogError("Нет доступных префабов замков для спавна.");
+            Debug.LogError("Нет доступных префабов замков.");
             return;
         }
 
@@ -129,8 +113,16 @@ public class EnemySpawner : MonoBehaviour
             Debug.Log("Замок уничтожен!");
 
             isCastleSpawned = false;
-            enemiesInCurrentCycle = 0; 
-            SpawnNextEntity();
+            enemiesInCurrentCycle = 0;
+
+            if (dialogSystem != null)
+            {
+                dialogSystem.StartDialog();
+            }
+            else
+            {
+                SpawnNextEntity();
+            }
         }
         else
         {
@@ -139,6 +131,11 @@ public class EnemySpawner : MonoBehaviour
             Debug.Log($"Враг уничтожен. Текущий счетчик уничтоженных врагов: {totalEnemiesDefeated}. В цикле: {enemiesInCurrentCycle}");
             SpawnNextEntity();
         }
+    }
+
+    public void ResumeGameAfterDialog()
+    {
+        SpawnNextEntity();
     }
 
     public int GetDefeatedEnemiesCount()

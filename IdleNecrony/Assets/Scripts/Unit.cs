@@ -14,9 +14,9 @@ public class Unit : MonoBehaviour
     public Text upgradeCostText;
     public Button upgradeButton;
 
-    public GameBalance gameBalance; 
+    public GameBalance gameBalance;
 
-   
+
     public event Action<float> OnDPSChanged;
 
     private void Start()
@@ -37,11 +37,11 @@ public class Unit : MonoBehaviour
     {
         if (CurrencyManager.Instance != null && CurrencyManager.Instance.SpendCurrency(upgradeCost))
         {
-            
+
             float dpsIncrease = baseDPS * gameBalance.unitUpgradeSettings.dpsIncreaseMultiplier;
             currentDPS += dpsIncrease;
 
-            
+
             upgradeCost *= gameBalance.unitUpgradeSettings.upgradeCostMultiplier;
 
             UpdateUI();
@@ -50,7 +50,7 @@ public class Unit : MonoBehaviour
         else
         {
             Debug.Log("Недостаточно валюты для улучшения " + unitName);
-            
+
         }
     }
 
@@ -71,3 +71,5 @@ public class Unit : MonoBehaviour
         OnDPSChanged?.Invoke(currentDPS);
     }
 }
+
+ 
